@@ -37,11 +37,11 @@ function renderTableFromRaw(lines) {
     grouped[day].push({ timeIn, timeOut });
   });
 
-for (let i = 1; i <= 31; i++) {
-    const day = String(i);
+  for (let i = 1; i <= 31; i++) {
+    const day = String(i); // No padding to keep the day as 1, 2, ..., 31
     let amIn = '', amOut = '', pmIn = '', pmOut = '';
 
-    if (grouped[day.padStart(2, '0')]) { 
+    if (grouped[day.padStart(2, '0')]) { // Ensure compatibility with zero-padded keys
         const times = grouped[day.padStart(2, '0')];
         if (times.length === 1) {
             amIn = times[0].timeIn;
@@ -56,13 +56,13 @@ for (let i = 1; i <= 31; i++) {
 
     formattedData.push([day, amIn, amOut, pmIn, pmOut]);
     tableBody.innerHTML += `
-      <tr>
-        <td>${day}</td>
-        <td>${amIn}</td>
-        <td>${amOut}</td>
-        <td>${pmIn}</td>
-        <td>${pmOut}</td>
-      </tr>
+        <tr>
+            <td>${day}</td>
+            <td>${amIn}</td>
+            <td>${amOut}</td>
+            <td>${pmIn}</td>
+            <td>${pmOut}</td>
+        </tr>
     `;
   }
 }
@@ -70,7 +70,8 @@ for (let i = 1; i <= 31; i++) {
 function processText() {
   const text = document.getElementById('textInput').value;
   const lines = text.trim().split('\n');
-  renderTableFromRaw(lines);
+renderTableFromRaw(lines);
+document.getElementById('copyButton').disabled = false; // Enable the copy button
 }
 
 function processCSV() {
@@ -91,4 +92,25 @@ function downloadFormattedCSV() {
   link.href = URL.createObjectURL(blob);
   link.download = "dtr_copy.csv";
   link.click();
+}
+
+function copyTableToClipboard() {
+    const table = document.getElementById('outputTable');
+    let tableText = '';
+
+    // Loop through table rows and cells to extract text, skipping the header row
+    for (let i = 1; i < table.rows.length; i++) {
+        let rowText = [];
+        for (let cell of table.rows[i].cells) {
+            rowText.push(cell.innerText);
+        }
+        tableText += rowText.join('\t') + '\n'; // Use tab-delimited format
+    }
+
+    // Copy the text to the clipboard
+    navigator.clipboard.writeText(tableText).then(() => {
+        alert('Table data copied to clipboard!');
+    }).catch(err => {
+        console.error('Failed to copy table data: ', err);
+    });
 }
