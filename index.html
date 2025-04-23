@@ -39,7 +39,7 @@
     </div>
 </nav>
 
-  <div class="container">
+  <div class="container bg-white p-4 rounded shadow-sm">
     <h2 class="mb-4">OTC Time Extractor</h2>
 
     <div class="mb-3">
@@ -52,21 +52,24 @@
       <button class="btn btn-success" onclick="downloadFormattedCSV()">Download Formatted CSV</button>
     </div>
 
-    <h4>Formatted Table</h4>
-    <div class="table-responsive">
+    <section>
+      <h4>Formatted Table</h4>
+      <button class="btn btn-info mb-3" id="copyButton" onclick="copyTableToClipboard()" disabled>Copy Time</button>
+      <div class="table-responsive">
       <table class="table table-bordered" id="outputTable">
         <thead class="table-dark">
-          <tr>
-            <th>Date</th>
-            <th>AM In</th>
-            <th>AM Out</th>
-            <th>PM In</th>
-            <th>PM Out</th>
-          </tr>
+        <tr>
+          <th>Date</th>
+          <th>AM In</th>
+          <th>AM Out</th>
+          <th>PM In</th>
+          <th>PM Out</th>
+        </tr>
         </thead>
         <tbody></tbody>
       </table>
-    </div>
+      </div>
+    </section>
   </div>
 
   <footer class="text-center mt-4">
